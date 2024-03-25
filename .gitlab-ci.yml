@@ -1,0 +1,76 @@
+image: maven:latest
+
+stages:
+    - auth
+    - codeAnalysis
+    - deploy
+    - unitTest
+    - undeploy
+
+# Get token
+gcp-authenticate:
+  stage: auth
+  image: "google/cloud-sdk:latest"
+  script:
+    # Auth GCP with Service Account
+    - export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CRED)
+    - echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
+    - export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+    - "gcloud config set project $GCP_PROJECT_ID"
+    - "gcloud config set account $GCP_SA"
+    - "gcloud auth login --cred-file=creds.json"
+    - "export TOKEN=$(gcloud auth print-access-token)"
+    - "curl --request PUT --header PRIVATE-TOKEN:$API_PAT https://gitlab.com/api/v4/projects/54316165/variables/TOKEN --form value=$TOKEN > response.json"
+    - "echo Token Generated Successfully"
+
+#Static code analysis
+static-code-analysis:
+  image: node:latest
+  stage: codeAnalysis
+  script:
+    # Run apigeelint
+    - npm install -g apigeelint
+    - apigeelint -f table.js --profile apigeex -s ./apiproxy
+
+# Deploy Proxy
+mvn-deploy-proxy:
+  stage: deploy
+  needs: ["static-code-analysis","gcp-authenticate"]
+  script:
+    - "mvn -Pgoogleapi -Pdeployonly install -Dapigee.config.options=create -DproxyName=$PROXY_NAME -Denv=$APIGEE_ENV -Dorg=$GCP_PROJECT_ID -Dtoken=$TOKEN"
+
+# Unit test with Cucuber.js and Gherkin
+bdd-unit-test:
+  image: node:latest
+  stage: unitTest
+  needs: ["mvn-deploy-proxy"]
+  script:
+    - cd api_everardoproxy_mocks
+    - npm run init-api
+    - npm run test
+    - export COUNT_FAILED=$(grep -o -i failed tests/features/resultados/cucumber_report.json| wc -l)
+    - "curl --request PUT --header PRIVATE-TOKEN:$API_PAT https://gitlab.com/api/v4/projects/54316165/variables/COUNT_FAILED_SCENARIOS --form value=$COUNT_FAILED > response2.json"
+
+mvn-undeploy-proxy:
+  image: "google/cloud-sdk:latest"
+  stage: undeploy
+  needs: ["bdd-unit-test"]
+  script:
+    - |
+      if [ $COUNT_FAILED_SCENARIOS -gt 0 ]; then 
+        export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CRED)
+        echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
+        export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+        gcloud config set project $GCP_PROJECT_ID
+        gcloud config set account $GCP_SA
+        gcloud auth login --cred-file=creds.json
+        gcloud apigee apis describe everardoproxy-v1 --format=json > describeResp.json
+        export REVISION=$(python3 ./getPreviousProxyRevision.py describeResp.json)
+        echo "=======Info: Undeploying latest revision due to failed scenarios in Unit Test Report"
+        gcloud apigee apis undeploy --environment=$APIGEE_ENV --api=$PROXY_NAME
+        echo "=======Info: Deploying previuos stable revision: $REVISION"
+        gcloud apigee apis deploy $REVISION --environment=$APIGEE_ENV --api=$PROXY_NAME
+      fi
+      if [ $COUNT_FAILED_SCENARIOS == 0 ]; then 
+        echo "=======Info: Nothing to UNDEPLOY, due to SUCCESSFULLY result on Unit Test Report"
+      fi
