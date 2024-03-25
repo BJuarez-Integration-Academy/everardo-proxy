@@ -1,1 +1,1 @@
-# everardo-proxy
+# everardo-proxy Apigee X
