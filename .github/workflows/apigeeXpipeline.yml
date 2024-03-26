@@ -50,6 +50,7 @@ jobs:
       # Unit test with Cucuber.js and Gherkin
       - name: 'Unit Tests with Cucuber.js and Gherkin'
         run: |
+          npm -v
           cd api_everardoproxy_mocks
           npm run init-api
           pwd
