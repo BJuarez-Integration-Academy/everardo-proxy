@@ -10,6 +10,7 @@ env:
   GCP_SA_FILE: ${{ vars.GCP_SA_KEY }}
   GCP_SA: ${{ vars.GCP_SA }}
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  My_NAME: Everardo Flores 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,8 +34,10 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
           echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
           export GOOGLE_APPLICATION_CREDENTIALS=creds.json
-          echo "This is my Google Project: $GCP_PROJECT_ID"
-          echo This is my Google Service Account: ${{ vars.GCP_SA }}
+          echo "This is my Google Project $GCP_PROJECT_ID"
+          echo This is my Google Service Account ${{ vars.GCP_SA }}
+          echo Who is executing this commands, $My_NAME
+          echo Name $env:My_NAME
           gcloud config set project $GCP_PROJECT_ID
           gcloud config set account $GCP_SA
           gcloud auth login --cred-file=creds.json
