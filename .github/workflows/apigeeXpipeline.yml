@@ -7,6 +7,7 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   GCP_SA_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
+  GCP_SA_FILE: ${{ vars.GCP_SA_KEY }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,7 +25,7 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: ${{ vars.GCP_SA_KEY }}
+          credentials_json: $GCP_SA_FILE
         
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
