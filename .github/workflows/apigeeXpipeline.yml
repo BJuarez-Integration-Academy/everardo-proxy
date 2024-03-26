@@ -33,7 +33,7 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
           echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
           export GOOGLE_APPLICATION_CREDENTIALS=creds.json
-          echo This is my Google Project: $GCP_PROJECT_ID
+          echo "This is my Google Project: $GCP_PROJECT_ID"
           echo This is my Google Service Account: ${{ vars.GCP_SA }}
           gcloud config set project $GCP_PROJECT_ID
           gcloud config set account $GCP_SA
