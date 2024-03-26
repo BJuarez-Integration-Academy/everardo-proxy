@@ -1,14 +1,13 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Deploy Apigee Proxy
 
-# Controls when the workflow will run
 on: [push, pull_request, workflow_dispatch]
 
 env:
   GCP_SA_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
   GCP_SA: ${{ vars.GCP_SA }}
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  PROXY_NAME: ${{ vars.PROXY_NAME }}
+  APIGEE_ENV: ${{ vars.APIGEE_ENV }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,8 +38,6 @@ jobs:
           export TOKEN=$(gcloud auth print-access-token)
           echo "TOKEN=$TOKEN" >> "$GITHUB_ENV"
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo Token= $TOKEN
+      # Deploy Proxy
+      - name: Deploy_Api_Proxy
+        run: mvn -Pgoogleapi -Pdeployonly install -Dapigee.config.options=create -DproxyName=$PROXY_NAME -Denv=$APIGEE_ENV -Dorg=$GCP_PROJECT_ID -Dtoken=$TOKEN
