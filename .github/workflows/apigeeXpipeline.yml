@@ -46,3 +46,13 @@ jobs:
       # Deploy Proxy
       - name: Deploy_Api_Proxy
         run: mvn -Pgoogleapi -Pdeployonly install -Dapigee.config.options=create -DproxyName=$PROXY_NAME -Denv=$APIGEE_ENV -Dorg=$GCP_PROJECT_ID -Dtoken=$TOKEN
+      
+      # Unit test with Cucuber.js and Gherkin
+      - name: 'Unit Tests with Cucuber.js and Gherkin'
+        run: |
+          cd api_everardoproxy_mocks
+          npm run init-api
+          npm run test
+          export COUNT_FAILED=$(grep -o -i failed tests/features/resultados/cucumber_report.json| wc -l)
+          echo "COUNT_FAILED_SCENARIOS=$COUNT_FAILED" >> "$GITHUB_ENV"
+          echo Found $COUNT_FAILED erros on Unit Test
