@@ -26,7 +26,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v2'
         with:
           version: '>= 363.0.0'
-
+      #Get GCP Auth TOKEN
       - name: 'Get Auth TOKEN'
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
@@ -37,6 +37,11 @@ jobs:
           gcloud auth login --cred-file=creds.json
           export TOKEN=$(gcloud auth print-access-token)
           echo "TOKEN=$TOKEN" >> "$GITHUB_ENV"
+      #Static code analysis
+      - name: 'Static Code Analysis'
+        run: |
+          npm install -g apigeelint
+          apigeelint -f table.js --profile apigeex -s ./apiproxy
 
       # Deploy Proxy
       - name: Deploy_Api_Proxy
