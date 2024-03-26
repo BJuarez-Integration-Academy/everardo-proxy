@@ -8,6 +8,8 @@ on: [push, pull_request, workflow_dispatch]
 env:
   GCP_SA_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
   GCP_SA_FILE: ${{ vars.GCP_SA_KEY }}
+  GCP_SA: ${{ vars.GCP_SA }}
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +29,15 @@ jobs:
           version: '>= 363.0.0'
 
       - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+        run: |
+          gcloud info
+          export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
+          echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
+          export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+          gcloud config set project $GCP_PROJECT_ID
+          gcloud config set account $GCP_SA
+          gcloud auth login --cred-file=creds.json
+          gcloud auth print-access-token
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
