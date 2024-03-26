@@ -23,6 +23,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: $GCP_SA_CREDS # Replace with the name of your GitHub Actions secret
         
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
@@ -34,10 +38,8 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
           echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
           export GOOGLE_APPLICATION_CREDENTIALS=creds.json
-          echo "This is my Google Project $GCP_PROJECT_ID"
-          echo This is my Google Service Account ${{ vars.GCP_SA }}
-          echo Who is executing this commands, $My_NAME
-          echo Name $env:My_NAME
+          echo Using Google Project $GCP_PROJECT_ID
+          echo Using Google Service Account $GCP_SA
           gcloud config set project $GCP_PROJECT_ID
           gcloud config set account $GCP_SA
           gcloud auth login --cred-file=creds.json
