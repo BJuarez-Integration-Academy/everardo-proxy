@@ -20,12 +20,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: $GCP_SA_FILE
         
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
