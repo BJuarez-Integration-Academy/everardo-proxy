@@ -56,4 +56,20 @@ jobs:
           npm run test
           export COUNT_FAILED=$(grep -o -i failed tests/features/resultados/cucumber_report.json| wc -l)
           echo "COUNT_FAILED_SCENARIOS=$COUNT_FAILED" >> "$GITHUB_ENV"
-          echo Found $COUNT_FAILED erros on Unit Test
+          echo ""=======Info: Found $COUNT_FAILED erros on Unit Test"
+
+      #Conditional undeploy
+      - name: 'Conditional Undeploy'
+        run: |
+          if [ $COUNT_FAILED_SCENARIOS -gt 0 ]; then 
+            gcloud apigee apis describe everardoproxy-v1 --format=json
+            gcloud apigee apis describe everardoproxy-v1 --format=json > describeResp.json
+            export REVISION=$(python3 ./getPreviousProxyRevision.py describeResp.json)
+            echo "=======Info: Undeploying latest revision due to failed scenarios in Unit Test Report"
+            gcloud apigee apis undeploy --environment=$APIGEE_ENV --api=$PROXY_NAME
+            echo "=======Info: Deploying previuos stable revision: $REVISION"
+            gcloud apigee apis deploy $REVISION --environment=$APIGEE_ENV --api=$PROXY_NAME
+          fi
+          if [ $COUNT_FAILED_SCENARIOS == 0 ]; then 
+            echo "=======Info: Nothing to UNDEPLOY, due to SUCCESSFULLY result on Unit Test Report"
+          fi
