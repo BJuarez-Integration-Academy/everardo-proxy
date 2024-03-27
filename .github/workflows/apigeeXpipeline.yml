@@ -64,9 +64,11 @@ jobs:
           if [ $COUNT_FAILED_SCENARIOS -gt 0 ]; then 
             gcloud apigee apis describe everardoproxy-v1 --format=json > describeResp.json
             export REVISION=$(python3 ./getPreviousProxyRevision.py describeResp.json)
+            export REVISION_NO=$(python3 ./getNumberOfRevisions.py describeResp.json)
             echo "=======Info: Undeploying latest revision due to failed scenarios in Unit Test Report"
             gcloud apigee apis undeploy --environment=$APIGEE_ENV --api=$PROXY_NAME
-            if [ $REVISION -gt 1 ]; then 
+            echo "Detected revision is $REVISION"
+            if [ $REVISION_NO -gt 1 ]; then 
               echo "=======Info: Deploying previuos stable revision: $REVISION"
               gcloud apigee apis deploy $REVISION --environment=$APIGEE_ENV --api=$PROXY_NAME
             fi
