@@ -13,7 +13,7 @@ Feature:
         Examples:
         |name|message|
         |Ever|Hi Ever!, Welcome to Apigee's world|
-        |German|Hi German!, Welcome to Apigee's world|
+        |German|Hi Apigeek friend!, Welcome to Apigee's world|
         
     Scenario Outline: Obtener un saludo general desde el proxy everardoproxy/
                 
