@@ -1,0 +1,262 @@
+[
+  {
+    "description": "    Yo como desarrollador de apis y microservicios, negocio me solicita crear una POC de Apigee, donde el proxy me devuelva un saludo personalizado si envio el parametro nombre o un saludo general si no envio el parametro.",
+    "keyword": "Feature",
+    "name": "",
+    "line": 4,
+    "id": "",
+    "tags": [],
+    "uri": "features\\everardoproxy.feature",
+    "elements": [
+      {
+        "id": ";obtener-un-saludo-personalizado-desde-el-proxy-everardoproxy/-enviando-un-nombre-como-parametro",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Obtener un saludo personalizado desde el proxy everardoproxy/ enviando un nombre como parametro",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\init.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I GET `host`/everardoproxy?name=Ever",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 355000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "response code should be 200",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:164"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "response body should be valid json",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:159"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "response body path $.message should be Hi Ever!, Welcome to Apigee's world",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:197"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8000000
+            }
+          }
+        ]
+      },
+      {
+        "id": ";obtener-un-saludo-personalizado-desde-el-proxy-everardoproxy/-enviando-un-nombre-como-parametro",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "Obtener un saludo personalizado desde el proxy everardoproxy/ enviando un nombre como parametro",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\init.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I GET `host`/everardoproxy?name=German",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 301000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "response code should be 200",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:164"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "response body should be valid json",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:159"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "response body path $.message should be Hi German!, Welcome to Apigee's world",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:197"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          }
+        ]
+      },
+      {
+        "id": ";obtener-un-saludo-general-desde-el-proxy-everardoproxy/",
+        "keyword": "Scenario",
+        "line": 26,
+        "name": "Obtener un saludo general desde el proxy everardoproxy/",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\init.js:6"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:26"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "I GET `host`/everardoproxy",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 271000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "response code should be 200",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:164"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "response body should be valid json",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:159"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "response body path $.message should be Hi Apigeek friend!, Welcome to Apigee's world",
+            "match": {
+              "location": "features\\step_definitions\\apickli-gherkin.js:197"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

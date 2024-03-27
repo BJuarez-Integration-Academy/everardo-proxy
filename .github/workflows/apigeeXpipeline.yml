@@ -53,5 +53,7 @@ jobs:
           npm -v
           cd api_everardoproxy_mocks
           npm run init-api
-          pwd
-          ls -lt
+          npm run test
+          export COUNT_FAILED=$(grep -o -i failed tests/features/resultados/cucumber_report.json| wc -l)
+          echo "COUNT_FAILED_SCENARIOS=$COUNT_FAILED" >> "$GITHUB_ENV"
+          echo Found $COUNT_FAILED erros on Unit Test

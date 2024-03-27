@@ -1,6 +1,4 @@
 /api_everardoproxy_mocks/tests/node_modules
 /api_everardoproxy_mocks/tests/node_modules/*
-/api_everardoproxy_mocks/tests/features/resultados
-/api_everardoproxy_mocks/tests/features/resultados/*
 /.vscode
 *.DS_Store
