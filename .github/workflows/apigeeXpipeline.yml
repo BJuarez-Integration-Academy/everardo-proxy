@@ -56,7 +56,7 @@ jobs:
           npm run test
           export COUNT_FAILED=$(grep -o -i failed tests/features/resultados/cucumber_report.json| wc -l)
           echo "COUNT_FAILED_SCENARIOS=$COUNT_FAILED" >> "$GITHUB_ENV"
-          echo ""=======Info: Found $COUNT_FAILED erros on Unit Test"
+          echo "=======Info: Found $COUNT_FAILED erros on Unit Test"
 
       #Conditional undeploy
       - name: 'Conditional Undeploy'
