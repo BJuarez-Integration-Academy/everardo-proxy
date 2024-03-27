@@ -44,8 +44,8 @@ jobs:
           apigeelint -f table.js --profile apigeex -s ./apiproxy
 
       # Deploy Proxy
-      #- name: 'Deploy Api Proxy to Apigee'
-      #  run: mvn -Pgoogleapi -Pdeployonly install -Dapigee.config.options=create -DproxyName=$PROXY_NAME -Denv=$APIGEE_ENV -Dorg=$GCP_PROJECT_ID -Dtoken=$TOKEN
+      - name: 'Deploy Api Proxy to Apigee'
+        run: mvn -Pgoogleapi -Pdeployonly install -Dapigee.config.options=create -DproxyName=$PROXY_NAME -Denv=$APIGEE_ENV -Dorg=$GCP_PROJECT_ID -Dtoken=$TOKEN
       
       # Unit test with Cucuber.js and Gherkin
       - name: 'Unit Tests with Cucuber.js and Gherkin'
@@ -62,7 +62,6 @@ jobs:
       - name: 'Conditional Undeploy'
         run: |
           if [ $COUNT_FAILED_SCENARIOS -gt 0 ]; then 
-            gcloud apigee apis describe everardoproxy-v1 --format=json
             gcloud apigee apis describe everardoproxy-v1 --format=json > describeResp.json
             export REVISION=$(python3 ./getPreviousProxyRevision.py describeResp.json)
             echo "=======Info: Undeploying latest revision due to failed scenarios in Unit Test Report"

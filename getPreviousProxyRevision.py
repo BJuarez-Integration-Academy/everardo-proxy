@@ -7,5 +7,7 @@ revisionsInt = []
 for rev in parsed_json["revision"]:
     revisionsInt.append(int(rev))
 revisionsInt.sort(reverse = True)
-#print(revisionsInt)
-print(revisionsInt[1])
+if len(revisionsInt) > 1:
+  print(revisionsInt[1])
+else:
+  print(1)
