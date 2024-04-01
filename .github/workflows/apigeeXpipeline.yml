@@ -36,6 +36,7 @@ jobs:
           gcloud config set account $GCP_SA
           gcloud auth login --cred-file=creds.json
           export TOKEN=$(gcloud auth print-access-token)
+          echo "::add-mask::$TOKEN"
           echo "TOKEN=$TOKEN" >> "$GITHUB_ENV"
       #Static code analysis
       - name: 'Static Code Analysis'
