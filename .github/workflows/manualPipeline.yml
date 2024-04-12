@@ -29,5 +29,4 @@ jobs:
           tar -xf google-cloud-cli-471.0.0-linux-x86_64.tar.gz
           pwd
           ls -lt
-          cd google-cloud-sdk
-          ls -lt
+          ./google-cloud-sdk/install.sh
