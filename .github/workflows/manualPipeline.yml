@@ -27,6 +27,11 @@ jobs:
           sudo apt-get update
           curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-471.0.0-linux-x86_64.tar.gz
           tar -xf google-cloud-cli-471.0.0-linux-x86_64.tar.gz
-          pwd
-          ls -lt
           ./google-cloud-sdk/install.sh
+          export GOOGLE_APPLICATION_CREDENTIALS=$(echo $GCP_SA_CREDS)
+          echo ${GOOGLE_APPLICATION_CREDENTIALS} > creds.json
+          export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+          gcloud config set project $GCP_PROJECT_ID
+          gcloud config set account $GCP_SA
+          gcloud auth login --cred-file=creds.json
+          gcloud auth print-access-token
