@@ -1,4 +1,4 @@
-name: Deploy Apigee Proxy
+name: Deploy Apigee Manual
 
 on: [workflow_dispatch]
 
@@ -13,7 +13,7 @@ env:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    name: Build_Test_Deploy
+    name: Setting-up-GCP
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
