@@ -25,4 +25,7 @@ jobs:
       - name: 'Setup GCP'
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3
+          curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-471.0.0-linux-x86_64.tar.gz
+          tar -xf google-cloud-cli-471.0.0-linux-x86_64.tar.gz
+          pwd
+          ls -lt
